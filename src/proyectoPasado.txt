@@ -1,0 +1,93 @@
+function App() {
+  return (
+    <div className="">
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={Home}/>
+        <Route exact path="/detalle" component={Detalle}/>
+        <Route exact path="/formulariodecreacion" component={FormularioDeCreacion}/>
+        <Route exact path="/formulariodeedicion" component={FormularioDeEdicion}/>
+        <Route exact path="/eliminar/:id/:titulo" component={Eliminar} />
+      </Switch>
+    </div>
+  );
+}
+
+-------HOME
+
+import { useHistory } from 'react-router-dom'
+import { deletePost } from '../helpers/post'
+
+const Eliminar = (props) => {
+    const history = useHistory()
+    
+    const id = props.match.params.id
+    const titulo = props.match.params.titulo
+
+    async function OnDelete(){
+
+        let response = await deletePost(id)
+        if(response){
+            history.push('/')
+        }
+    }
+
+    function OnCancel(){
+        history.push('/')
+    }
+
+    return (
+        <div>
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">{titulo}</h5>
+                    </div>
+                    <div className="modal-body">
+                        <p>¿Seguro que quiere eliminar este post?</p>
+                    </div>
+                    <div className="modal-footer">
+                        <button onClick={OnCancel} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button onClick={OnDelete} type="button" className="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Eliminar;
+
+----post
+
+import Axios from 'axios'
+
+export async function getPosts(){
+    let check = {}
+    let {status, data} = await Axios.get('https://jsonplaceholder.typicode.com/posts')
+    if(status === 200){
+        check.data = data
+        check.ok = true
+    } else {
+        check.ok = false
+    }
+    return check
+}
+
+export function getPost(id){
+
+}
+
+export function pathPost(){
+
+}
+
+export async function deletePost(id){
+    let {status} = await Axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    if(status === 200){
+        return true
+    } else {
+        return false
+    }      
+}
+
