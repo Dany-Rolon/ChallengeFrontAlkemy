@@ -21,7 +21,7 @@ export default function FormularioDeCreacion(){
     }
 
     return(
-        <div className="grid grid-cols-1 justify-items-center place-content-center w-screen h-screen">
+        <div className="grid grid-cols-1 justify-items-center place-content-center h-screen">
             <div className="border rounded-md p-4 w-72 shadow-lg">
                 <h1 className="text-center font-semibold text-2xl mb-4 border-b w-full">Crear un nuevo Post</h1>
                 
