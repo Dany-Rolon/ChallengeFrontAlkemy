@@ -1,10 +1,13 @@
 import { useState } from "react"
+import { CreatePost } from '../helpers/PostsHelpers'
+import { useHistory } from 'react-router-dom'
 
-export default function FormularioDeCreacion(){
+export default function FormularioDeCreacion({setShowingAlert, setMessage}){
+    const history = useHistory()
 
     const [newPost, setNewPost] = useState({
-        titulo:'',
-        contenido:''
+        title:'',
+        body:''
     })
 
     function OnChange(e){
@@ -15,9 +18,16 @@ export default function FormularioDeCreacion(){
         })
     }
 
-    function Submit(){
+    async function Submit(){
         // Logica para subir el post
         console.log(newPost);
+        await CreatePost(newPost)
+        setMessage({
+            color: 'green',
+            message: 'Se ha creado un nuevo post'
+        })
+        setShowingAlert(true)
+        history.replace('/')
     }
 
     return(
@@ -28,13 +38,13 @@ export default function FormularioDeCreacion(){
                 {/* Titulo */}
                 <div className="mb-2">
                     <h2 className="text-xl">Titulo</h2>
-                    <input onChange={OnChange} name="titulo" value={newPost.titulo} type="text" className="w-full border-b-2 p-0.5" placeholder="Tailwind ¿Mejor que Bootstrap?"/>
+                    <input onChange={OnChange} name="title" value={newPost.title} type="text" className="w-full border-b-2 p-0.5" placeholder="Tailwind ¿Mejor que Bootstrap?"/>
                 </div>
 
                 {/* Contenido */}
                 <div>
                     <h2 className="text-xl">Contenido</h2>
-                    <textarea onChange={OnChange} name="contenido" value={newPost.contenido} rows="5" placeholder="Si, definitivamente" className="w-full border-b-2 p-0.5"></textarea>
+                    <textarea onChange={OnChange} name="body" value={newPost.body} rows="5" placeholder="Si, definitivamente" className="w-full border-b-2 p-0.5"></textarea>
                 </div>
 
                 {/* Boton Crear*/}

@@ -6,28 +6,44 @@ const GetPosts = async () => {
 }
 
 const GetPostsDetalle = async (id) => {
-    let {status, data} = await Axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-    if(status === 200){
+    try {
+        let {data} = await Axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
         return data
-    } else {
-        console.log('Hubo un error');
+    } catch (error) {
+        return false
     }
 }
 
 const DeletePost = async(id) => {
-    let response = await Axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    try {
+        let response = await Axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        console.log(response);
+        return true
+    } catch (error) {
+        return false
+    }
+}
+
+const ModificarPost = async(id, post) => {
+    let response = await Axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, post)
     console.log(response);
     if(response.status === 200){
         return true
     } else {
-        console.log('Ocurrio un error');
+        console.log('Hubo un error')
+        return false
     }
+}
+
+const CreatePost = async(obj) => {
+    let response = await Axios.post(`https://jsonplaceholder.typicode.com/posts`,obj)
+    console.log(response)
 }
 
 export {
     GetPosts,
     DeletePost,
-    GetPostsDetalle
+    GetPostsDetalle,
+    ModificarPost,
+    CreatePost
 }
-
-
